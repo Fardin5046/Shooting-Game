@@ -6,7 +6,9 @@ import math
 camera_pos = (0, 500, 500)
 
 fovY = 120  # Field of view
+# Grid length= What will be the size of the boxes less is smaller and large is bigger boxes
 GRID_LENGTH = 600  # Length of grid lines
+
 rand_var = 423
 
 
@@ -169,7 +171,7 @@ def showScreen():
 
     # Draw the grid (game floor)
     glBegin(GL_QUADS)
-
+    # square Boxes
     glColor3f(1, 1, 1)
     glVertex3f(-GRID_LENGTH, GRID_LENGTH, 0)
     glVertex3f(0, GRID_LENGTH, 0)
