@@ -3,7 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import math
 # Camera-related variables
-camera_pos = (0, 500, 500)
+camera_pos = (0, 500, 500) # Camera position means from where the game will show the screen smaller is closer and larger is from far
 
 fovY = 120  # Field of view
 # Grid length= What will be the size of the boxes less is smaller and large is bigger boxes
