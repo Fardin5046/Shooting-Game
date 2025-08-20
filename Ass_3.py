@@ -3,9 +3,9 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import math
 # Camera-related variables
-camera_pos = (0, 500, 500) # Camera position means from where the game will show the screen smaller is closer and larger is from far
+camera_pos = (0, 500, 800) # Camera position means from where the game will show the screen smaller is closer and larger is from far
 
-fovY = 120  # Field of view
+fovY = 110  # Field of view
 # Grid length= What will be the size of the boxes less is smaller and large is bigger boxes
 GRID_LENGTH = 600  # Length of grid lines
 
@@ -45,7 +45,6 @@ def draw_shapes():
     glTranslatef(0, 0, 100)
     glColor3f(0, 1, 0)
     glutSolidCube(60)
-
     glColor3f(1, 1, 0)
     glScalef(2, 2, 2)
     gluCylinder(gluNewQuadric(), 40, 5, 150, 10,
@@ -94,18 +93,21 @@ def specialKeyListener(key, x, y):
     global camera_pos
     x, y, z = camera_pos
     # Move camera up (UP arrow key)
-    # if key == GLUT_KEY_UP:
+    if key == GLUT_KEY_UP:
+        y-=10
 
-    # # Move camera down (DOWN arrow key)
-    # if key == GLUT_KEY_DOWN:
+    # Move camera down (DOWN arrow key)
+    if key == GLUT_KEY_DOWN:
+        y+=10
 
     # moving camera left (LEFT arrow key)
     if key == GLUT_KEY_LEFT:
-        x -= 1  # Small angle decrement for smooth movement
+        x -= 10
+        # Small angle decrement for smooth movement
 
     # moving camera right (RIGHT arrow key)
     if key == GLUT_KEY_RIGHT:
-        x += 1  # Small angle increment for smooth movement
+        x += 10  # Small angle increment for smooth movement
 
     camera_pos = (x, y, z)
 
@@ -148,7 +150,72 @@ def idle():
     """
     # Ensure the screen updates with the latest changes
     glutPostRedisplay()
+# def enemy():
+#     glPushMatrix()
+#     glTra
+#     glutSolidCube(60)
+#     glPushMatrix()
+def draw_boxes(row,col,size):
+    for i in range(row):
+        for j in range(col):
+            x = (j - col / 2) * size
+            y = (i - row / 2) * size
 
+            # Alternate colors like chessboard
+            if (i + j) % 2 == 0:
+                glColor3f(1, 1, 1)  # white
+            else:
+                glColor3f(0.7, 0.5, 0.95) #Purple
+
+            # Draw one quad (tile)
+            glBegin(GL_QUADS)
+            glVertex3f(x, y, 0)
+            glVertex3f(x + size, y, 0)
+            glVertex3f(x + size, y + size, 0)
+            glVertex3f(x, y + size, 0)
+            glEnd()
+
+
+def draw_boundaries(row, col, size, height=50):
+
+    half_w = (col * size) // 2
+    half_h = (row * size) // 2
+
+    # Bottom boundary (green)
+    glColor3f(0, 1, 0)
+    glBegin(GL_QUADS)
+    glVertex3f(-half_w, -half_h, 0)
+    glVertex3f( half_w, -half_h, 0)
+    glVertex3f( half_w, -half_h, height)
+    glVertex3f(-half_w, -half_h, height)
+    glEnd()
+
+    # Top boundary (blue)
+    glColor3f(0, 0, 1)
+    glBegin(GL_QUADS)
+    glVertex3f(-half_w, half_h, 0)
+    glVertex3f( half_w, half_h, 0)
+    glVertex3f( half_w, half_h, height)
+    glVertex3f(-half_w, half_h, height)
+    glEnd()
+
+    # Left boundary (cyan)
+    glColor3f(0, 1, 1)
+    glBegin(GL_QUADS)
+    glVertex3f(-half_w, -half_h, 0)
+    glVertex3f(-half_w,  half_h, 0)
+    glVertex3f(-half_w,  half_h, height)
+    glVertex3f(-half_w, -half_h, height)
+    glEnd()
+
+    # Right boundary (magenta)
+    glColor3f(1, 0, 1)
+    glBegin(GL_QUADS)
+    glVertex3f(half_w, -half_h, 0)
+    glVertex3f(half_w,  half_h, 0)
+    glVertex3f(half_w,  half_h, height)
+    glVertex3f(half_w, -half_h, height)
+    glEnd()
 
 def showScreen():
     """
@@ -164,10 +231,10 @@ def showScreen():
     setupCamera()  # Configure camera perspective
 
     # Draw a random points
-    glPointSize(20)
-    glBegin(GL_POINTS)
-    glVertex3f(-GRID_LENGTH, GRID_LENGTH, 0)
-    glEnd()
+    # glPointSize(20)
+    # glBegin(GL_POINTS)
+    # glVertex3f(-GRID_LENGTH, GRID_LENGTH, 0)
+    # glEnd()
 
     # Draw the grid (game floor)
     glBegin(GL_QUADS)
@@ -196,11 +263,13 @@ def showScreen():
     glEnd()
 
     # Display game info text at a fixed screen position
-    draw_text(10, 770, f"A Random Fixed Position Text")
-    draw_text(10, 740, f"See how the position and variable change?: {rand_var}")
+    draw_text(10, 770, f"Player Life remaining: 0")
+    draw_text(10, 740, f"Game Score: {rand_var}")
+    draw_text(10, 710, f"Player Bullet missed: {rand_var}")
 
-    draw_shapes()
-
+    # draw_shapes()
+    draw_boxes(13,13,100)
+    draw_boundaries(13, 13, 100, 80)
     # Swap buffers for smooth rendering (double buffering)
     glutSwapBuffers()
 
