@@ -121,7 +121,7 @@ def mouseListener(button, state, x, y):
     # if button == GLUT_RIGHT_BUTTON and state == GLUT_DOWN:
 
 
-def setupCamera():
+def  setupCamera():
     """
     Configures the camera's projection and view settings.
     Uses a perspective projection and positions the camera to look at the target.
